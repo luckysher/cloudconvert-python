@@ -1,8 +1,8 @@
 ###################################################################
-##      Test cases for Cloud Convert API jobs endpoints         ##
+##      Test cases for Cloud Convert API jobs endpoints          ##
 ##                                                               ##
 ## How to run ? :                                                ##
-##                $ python taskTests.py                          ##
+##                $ python jobTests.py                           ##
 ###################################################################
 
 import sys
