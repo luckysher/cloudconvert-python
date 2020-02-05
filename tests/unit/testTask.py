@@ -2,7 +2,7 @@
 ##      Test cases for Cloud Convert API tasks endpoints         ##
 ##                                                               ##
 ## How to run ? :                                                ##
-##                $ python taskTests.py                          ##
+##                $ python testTask.py                          ##
 ###################################################################
 
 import sys
@@ -116,6 +116,14 @@ class TaskTestCase(unittest.TestCase):
         task_id = "be76cadf-33de-42f7-8c7f-9df787a09951"
         res = self.cloudconvert.Task.cancel(id=task_id)
         assert res == True, "Unable to cancel task"
+
+    def testDownloadOutput(self):
+        """
+        Testcase to download output file
+        :return:
+        """
+        res = cloudconvert.download(filename="/home/ldev/Desktop/sample_down.docx", url="https://storage.de.cloud.ovh.net/v1/AUTH_b2cffe8f45324c2bba39e8db1aedb58f/cloudconvert-files/141cbea1-af92-49b3-aa8e-d085cf8b69f7/sample.docx?temp_url_sig=ee07b3353e8f5b0d478fd32d0a1c522c3285edc2&temp_url_expires=1580838826")
+        print(res)
 
     def tearDown(self):
         """
