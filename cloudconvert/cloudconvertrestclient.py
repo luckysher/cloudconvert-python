@@ -216,7 +216,7 @@ def default_client():
     """Returns default api object and if not present creates a new one
     By default points to developer sandbox
     """
-    from cloudconvert.envrionment_vars import API_KEY
+    from cloudconvert.environment_vars import API_KEY
     global __client__
     if __client__ is None:
         try:
