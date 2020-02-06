@@ -87,9 +87,9 @@ res = cloudconvert.Task.find(id=upload_task_id)
 The node SDK allows to verify webhook requests received from CloudConvert.
 
 ```js
-const payloadString = '...'; # The JSON string from the raw request body.
-const signature = '...'; # The value of the "CloudConvert-Signature" header.
-const signingSecret = '...'; # You can find it in your webhook settings.
+payloadString = '...'; # The JSON string from the raw request body.
+signature = '...'; # The value of the "CloudConvert-Signature" header.
+signingSecret = '...'; # You can find it in your webhook settings.
 
 isValid = cloudconvert.Webhook.verify(payloadString, signature, signingSecret); # returns true or false
 ```
