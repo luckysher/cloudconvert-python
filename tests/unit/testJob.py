@@ -18,8 +18,8 @@ API_KEY = "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjA3N2YwMjZiMzlmNTBmNGE1M
 
 cloudconvert.API_KEY = API_KEY
 
-# By Default API mode is in sandbox mode
-# cloudconvert.sandbox = False
+# Set API client in sandbox mode
+# cloudconvert.sandbox = True
 
 
 class JobTestCase(unittest.TestCase):

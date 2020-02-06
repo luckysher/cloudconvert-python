@@ -2,7 +2,7 @@
 
 ## Creating and Configuring API Client
 
-> You can set the API sandbox mode using the ```sandbox = True``` and then can call configure method
+> You can set the API sandbox mode using the ```sandbox = True``` and then can call configure method.
 ```
   import cloudconvert
  
