@@ -41,7 +41,7 @@ class JobsTestCase(unittest.TestCase):
         :return:
         """
         print("Test case for uploading and downloading files...")
-        job = self.cloudconvert.Job.create(operation="jobs", payload={
+        job = self.cloudconvert.Job.create(payload={
             'tag': 'integration-test-upload-download',
             'tasks': {
                 'import-it': {
@@ -71,7 +71,7 @@ class JobsTestCase(unittest.TestCase):
         import_task = cloudconvert.Task.find(id=import_task_id)
 
         # do upload
-        uploaded = cloudconvert.Task.upload(file_name="path/to/file/upload.ext", task=import_task)
+        uploaded = cloudconvert.Task.upload(file_name="file/path/to/upload.ext", task=import_task)
 
         if uploaded:
             print("Uploaded file successfully..")
