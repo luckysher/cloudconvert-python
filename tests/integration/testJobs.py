@@ -2,7 +2,7 @@
 ##      Test case for jobs                                       ##
 ##                                                               ##
 ## How to run ? :                                                ##
-##                $ python testJobs.py                           ##
+##                $ python tests/integration/testJobs.py         ##
 ###################################################################
 
 import sys
