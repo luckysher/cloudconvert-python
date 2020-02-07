@@ -2,6 +2,7 @@
 
 > This is the official Python SDK v2 for the [CloudConvert](https://cloudconvert.com/api/v2) _API v2_. 
 
+[![Build Status](https://travis-ci.com/luckysher/cloudconvert-python.svg?branch=master)](https://travis-ci.com/luckysher/cloudconvert-python)
 ## Installation
 
 ```
