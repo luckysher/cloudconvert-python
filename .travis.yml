@@ -7,5 +7,9 @@ jobs:
   include:
     - python: '3.6'
       env: EXTRA_TESTS=true
+    - python: '3.5'
+      env: EXTRA_TESTS=true
+    - python: '2.7'
+      env: EXTRA_TESTS=true
 
-script: env $EXTRA_TESTS  ./testing.py
+script: env $EXTRA_TESTS  ./tests/unit/testing.py
