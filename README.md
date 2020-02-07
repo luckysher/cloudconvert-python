@@ -98,19 +98,24 @@ isValid = cloudconvert.Webhook.verify(payloadString, signature, signingSecret); 
 
 ```
 # Run Task tests
-$ python testTask.py
+$ python tests/unit/testTask.py
 
 # Run Job tests
-$ python testJob.py
+$ python tests/unit/testJob.py
 
 # Run Webhook tests
-$ python testWebhookSignature.py
-
+$ python tests/unit/testWebhookSignature.py
+ 
 ```
 
 
 ## Integration Tests
 ```
+# Run Integration test for task
+$ python tests/integration/testTasks.py 
+
+# Run Integration test for Job
+$ python tests/integration/testJobs.py 
 
 ```
        
