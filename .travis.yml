@@ -8,4 +8,4 @@ python:
 install:
   - pip install -r requirements.txt
 
-script: python python tests/unit/testTask.py TaskTestCase.testCreateTask || python3 python tests/unit/testTask.py TaskTestCase.testCreateTask
+script: python tests/unit/testTask.py TaskTestCase.testCreateTask || python3 tests/unit/testTask.py TaskTestCase.testCreateTask
