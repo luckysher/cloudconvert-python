@@ -12,4 +12,4 @@ jobs:
     - python: '2.7'
       env: EXTRA_TESTS=true
 
-script: env $EXTRA_TESTS  ./tests/unit/testing.py
+script: ./tests/unit/testing.py
