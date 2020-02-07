@@ -118,7 +118,10 @@ class Find(Resource):
 
         url = util.join_url(cls.path, str(id))
         res = api_client.get(url)
-        return res
+        try:
+            return res.get("data")
+        except:
+            return res
 
 
 class List(Resource):
@@ -142,7 +145,10 @@ class List(Resource):
         try:
             response = api_client.get(url)
             res = cls.list_class(response, api_client=api_client)
-            return res.to_json()
+            try:
+                return res.to_json().get("data")
+            except:
+                return res.to_json()
         except AttributeError:
             # To handle the case when response is JSON Array
             if isinstance(response, list):
@@ -162,8 +168,11 @@ class Create(Resource):
 
         api_client = default_client()
         url = util.join_url('v2', operation or '')
-        new_attributes = api_client.post(url, payload, headers={})
-        return new_attributes
+        res = api_client.post(url, payload, headers={})
+        try:
+            return res.get("data")
+        except:
+            return res
 
 
 class Upload(Resource):
@@ -172,14 +181,14 @@ class Upload(Resource):
     def upload(cls, file_name, task):
         """Upload a resource e.g.
         """
-        if not (task.get('data').get('operation') == 'import/upload'):
+        if not (task.get('operation') == 'import/upload'):
             raise Exception("The task operation is not import/upload'")
 
         import os
         if not os.path.exists(file_name):
             raise Exception("Does not find the exact path of the file: {}".format(file_name))
 
-        form = task.get('data').get('result').get('form')
+        form = task.get('result').get('form')
         port_url = form.get('url')
         params = form.get('parameters')
         try:
@@ -226,7 +235,10 @@ class Retry(Resource):
 
         url = util.join_url(cls.path, str(id), "retry")
         res = api_client.post(url)
-        return res
+        try:
+            return res.get("data")
+        except:
+            return res
 
 
 class Wait(Resource):
@@ -240,7 +252,10 @@ class Wait(Resource):
 
         url = util.join_url(cls.path, str(id), "wait")
         res = api_client.get(url)
-        return res
+        try:
+            return res.get("data")
+        except:
+            return res
 
 
 class Show(Resource):
@@ -253,7 +268,10 @@ class Show(Resource):
         api_client = default_client()
         url = util.join_url(cls.path, str(id))
         res = api_client.get(url)
-        return res
+        try:
+            return res.get("data")
+        except:
+            return res
 
 
 class Delete(Resource):
