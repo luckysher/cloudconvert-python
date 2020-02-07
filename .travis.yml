@@ -3,13 +3,8 @@ python:
   - '3.6'
   - '3.5'
   - '2.7'
-jobs:
-  include:
-    - python: '3.6'
-      env: EXTRA_TESTS=true
-    - python: '3.5'
-      env: EXTRA_TESTS=true
-    - python: '2.7'
-      env: EXTRA_TESTS=true
+  -
+install:
+  - pip install -r requirements.txt
 
-script: ./tests/unit/testing.py
+script: python tests/unit/testing.py || python3 tests/unit/testing.py
