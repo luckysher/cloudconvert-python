@@ -2,7 +2,7 @@
 ##      Test cases for Cloud Convert API jobs endpoints          ##
 ##                                                               ##
 ## How to run ? :                                                ##
-##                $ python testJob.py                           ##
+##                $ python tests/unit/testJob.py                 ##
 ###################################################################
 
 import sys
@@ -51,7 +51,7 @@ class JobTestCase(unittest.TestCase):
                 }
             }
         }
-        res = self.cloudconvert.Job.create(operation="jobs", payload=job_with_single_task)
+        res = self.cloudconvert.Job.create(payload=job_with_single_task)
 
         assert 'id' in list(res.keys()), "Unable to create new job"
 
