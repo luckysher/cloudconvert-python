@@ -53,7 +53,7 @@ class JobTestCase(unittest.TestCase):
         }
         res = self.cloudconvert.Job.create(operation="jobs", payload=job_with_single_task)
 
-        assert 'id' in list(res.get('data').keys()), "Unable to create new job"
+        assert 'id' in list(res.keys()), "Unable to create new job"
 
     def testWaitJob(self):
         """
@@ -63,7 +63,7 @@ class JobTestCase(unittest.TestCase):
         print("testcase for waiting job..")
         job_id = "e03ed877-4964-4876-b1e2-8a5e597f9e71"
         res = self.cloudconvert.Job.wait(id=job_id)
-        assert 'id' in list(res.get('data').keys()), "Unable to create wait job"
+        assert 'id' in list(res.keys()), "Unable to create wait job"
 
     def testShowJob(self):
         """
@@ -73,7 +73,7 @@ class JobTestCase(unittest.TestCase):
         print("testcase for show job..")
         job_id = "e03ed877-4964-4876-b1e2-8a5e597f9e71"
         res = self.cloudconvert.Job.show(id=job_id)
-        assert 'id' in list(res.get('data').keys()), "Unable to create show job"
+        assert 'id' in list(res.keys()), "Unable to create show job"
 
     def testListJob(self):
         """
@@ -84,7 +84,7 @@ class JobTestCase(unittest.TestCase):
 
         res = self.cloudconvert.Job.all()
         # res = self.cloudconvert.Job.all(params={'page':10})
-        assert isinstance(res.get('data'), list), "Unable to fetch the job list"
+        assert isinstance(res, list), "Unable to fetch the job list"
 
     def testDeleteJob(self):
         """

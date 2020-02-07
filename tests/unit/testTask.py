@@ -49,7 +49,7 @@ class TaskTestCase(unittest.TestCase):
 
         res = self.cloudconvert.Task.create(operation="import/url", payload=new_import_url_task)
 
-        assert 'id' in list(res.get('data').keys()), "Unable to create 'import/url' task"
+        assert 'id' in list(res.keys()), "Unable to create 'import/url' task"
 
     def testWaitTask(self):
         """
@@ -60,7 +60,7 @@ class TaskTestCase(unittest.TestCase):
         task_id = "be76cadf-33de-42f7-8c7f-9df787a09951"
         res = self.cloudconvert.Task.wait(id=task_id)
 
-        assert 'id' in list(res.get('data').keys()), "Unable to create wait task"
+        assert 'id' in list(res.keys()), "Unable to create wait task"
 
     def testShowTask(self):
         """
@@ -71,7 +71,7 @@ class TaskTestCase(unittest.TestCase):
         task_id = "be76cadf-33de-42f7-8c7f-9df787a09951"
         res = self.cloudconvert.Task.show(id=task_id)
 
-        assert 'id' in list(res.get('data').keys()), "Unable to create show task"
+        assert 'id' in list(res.keys()), "Unable to create show task"
 
     def testListTask(self):
         """
@@ -83,7 +83,7 @@ class TaskTestCase(unittest.TestCase):
         res = self.cloudconvert.Task.all()
         # res = self.cloudconvert.Task.all(params={'page':10})
 
-        assert isinstance(res.get('data'), list), "Unable to fetch the task list"
+        assert isinstance(res, list), "Unable to fetch the task list"
 
     def testRetryTask(self):
         """
@@ -94,7 +94,7 @@ class TaskTestCase(unittest.TestCase):
         task_id = "be76cadf-33de-42f7-8c7f-9df787a09951"
         res = self.cloudconvert.Task.retry(id=task_id)
 
-        assert 'id' in list(res.get('data').keys()), "Unable to retry task"
+        assert 'id' in list(res.keys()), "Unable to retry task"
 
     def testDeleteTask(self):
         """

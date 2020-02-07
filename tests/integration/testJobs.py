@@ -56,7 +56,7 @@ class JobsTestCase(unittest.TestCase):
 
         import_task = None
         # fetch task with name "import-id"
-        for task in job["data"]["tasks"]:
+        for task in job["tasks"]:
             task_name = task.get("name")
             if task_name == "import-it":
                 import_task = task
@@ -80,8 +80,8 @@ class JobsTestCase(unittest.TestCase):
             exported_task = cloudconvert.Task.find(id=export_task_id)
 
             # get exported url
-            exported_url = exported_task.get("data").get("result").get("files")[0].get("url")
-            fileName = exported_task.get("data").get("result").get("files")[0].get("filename")
+            exported_url = exported_task.get("result").get("files")[0].get("url")
+            fileName = exported_task.get("result").get("files")[0].get("filename")
 
             # now download the exported file
             cloudconvert.download(url=exported_url, filename=fileName)

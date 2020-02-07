@@ -48,12 +48,12 @@ class TasksTestCase(unittest.TestCase):
         task = cloudconvert.Task.create(operation="import/url", payload=new_task)
 
         # do wait for the task
-        wait_task = cloudconvert.Task.find(id=task["data"]["id"])
+        wait_task = cloudconvert.Task.find(id=task["id"])
 
         # delete the task
-        deleted = cloudconvert.Task.delete(id=wait_task["data"]["id"])
+        deleted = cloudconvert.Task.delete(id=wait_task["id"])
 
-        print("task deleted with Id: {}".format(wait_task["data"]["id"]) if deleted else "unable to delete the task: {}".format(wait_task["data"]["id"]))
+        print("task deleted with Id: {}".format(wait_task["id"]) if deleted else "unable to delete the task: {}".format(wait_task["id"]))
 
     def tearDown(self):
         """
