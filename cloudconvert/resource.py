@@ -119,7 +119,7 @@ class Find(Resource):
         url = util.join_url(cls.path, str(id))
         res = api_client.get(url)
         try:
-            return res.get("data")
+            return res["data"]
         except:
             return res
 
@@ -169,8 +169,9 @@ class Create(Resource):
         api_client = default_client()
         url = util.join_url('v2', operation or '')
         res = api_client.post(url, payload, headers={})
+
         try:
-            return res.get("data")
+            return res["data"]
         except:
             return res
 
@@ -203,7 +204,7 @@ class Retry(Resource):
         url = util.join_url(cls.path, str(id), "retry")
         res = api_client.post(url)
         try:
-            return res.get("data")
+            return res["data"]
         except:
             return res
 
@@ -220,7 +221,7 @@ class Wait(Resource):
         url = util.join_url(cls.path, str(id), "wait")
         res = api_client.get(url)
         try:
-            return res.get("data")
+            return res["data"]
         except:
             return res
 
@@ -236,7 +237,7 @@ class Show(Resource):
         url = util.join_url(cls.path, str(id))
         res = api_client.get(url)
         try:
-            return res.get("data")
+            return res["data"]
         except:
             return res
 
