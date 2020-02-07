@@ -182,11 +182,21 @@ class Upload(Resource):
         form = task.get('data').get('result').get('form')
         port_url = form.get('url')
         params = form.get('parameters')
-        files = {'file': open(file_name, 'rb')}
+        try:
+            file = open(file_name, 'rb')
 
-        import requests
-        res = requests.request(method='POST', url=port_url, files=files, data=params)
-        return True if res.status_code == 201 else False
+            files = {'file': file}
+
+            import requests
+            res = requests.request(method='POST', url=port_url, files=files, data=params)
+            file.close()
+            return True if res.status_code == 201 else False
+
+        except Exception as e:
+            print("got exception while uploading file")
+            print(e)
+
+        return False
 
 
 class Cancel(Resource):
