@@ -175,39 +175,6 @@ class Create(Resource):
             return res
 
 
-class Upload(Resource):
-
-    @classmethod
-    def upload(cls, file_name, task):
-        """Upload a resource e.g.
-        """
-        if not (task.get('operation') == 'import/upload'):
-            raise Exception("The task operation is not import/upload'")
-
-        import os
-        if not os.path.exists(file_name):
-            raise Exception("Does not find the exact path of the file: {}".format(file_name))
-
-        form = task.get('result').get('form')
-        port_url = form.get('url')
-        params = form.get('parameters')
-        try:
-            file = open(file_name, 'rb')
-
-            files = {'file': file}
-
-            import requests
-            res = requests.request(method='POST', url=port_url, files=files, data=params)
-            file.close()
-            return True if res.status_code == 201 else False
-
-        except Exception as e:
-            print("got exception while uploading file")
-            print(e)
-
-        return False
-
-
 class Cancel(Resource):
     @classmethod
     def cancel(cls, id):
@@ -290,25 +257,3 @@ class Delete(Resource):
         return api_resource.success()
 
 
-class Post(Resource):
-    @classmethod
-    def post(cls, operation, payload=None):
-        """Constructs url with passed in headers and makes post request via
-        post method in rest client api class.
-        Usage::
-            >>> Task.post("create", {})
-        """
-        api_client = default_client()
-        attributes = payload or {}
-        url = util.join_url(cls.path, operation)
-        print(url)
-        return url
-        if not isinstance(attributes, Resource):
-            attributes = Resource(attributes, api=api_client)
-        new_attributes = cls.api_client.post(url, attributes.to_dict(), attributes.http_headers())
-        if isinstance(cls, Resource):
-            cls.error = None
-            cls.merge(new_attributes)
-            return cls.success()
-        else:
-            return cls(new_attributes, api=api_client)

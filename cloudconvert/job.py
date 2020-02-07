@@ -1,7 +1,7 @@
-from cloudconvert.resource import List, Find, Create, Post, Delete, Wait, Show, Resource
+from cloudconvert.resource import List, Find, Create, Delete, Wait, Show, Resource
 
 
-class Job(List, Find, Create, Post, Wait, Show, Delete):
+class Job(List, Find, Create, Wait, Show, Delete):
     """Job class wrapping the REST v2/jobs endpoint. Enabling New Job Creation, Showing a job, Waiting for job,
     Finding a job, Deleting a job.
 
