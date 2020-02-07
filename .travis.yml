@@ -3,4 +3,9 @@ python:
   - '3.6'
   - '3.5'
   - '2.7'
-script: ./testing.py
+jobs:
+  include:
+    - python: '3.6'
+      env: EXTRA_TESTS=true
+
+script: env $EXTRA_TESTS  ./testing.py
