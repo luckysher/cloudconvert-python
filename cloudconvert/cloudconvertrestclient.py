@@ -122,11 +122,11 @@ class CloudConvertRestClient(object):
         elif status == 400:
             raise exceptions.BadRequest(response, content)
         elif status == 401:
-            raise exceptions.UnauthorizedAccess(response, content)
+            return json.loads(content) if content else {}
         elif status == 403:
             raise exceptions.ForbiddenAccess(response, content)
         elif status == 404:
-            raise exceptions.ResourceNotFound(response, content)
+            return json.loads(content) if content else {}
         elif status == 405:
             raise exceptions.MethodNotAllowed(response, content)
         elif status == 409:
