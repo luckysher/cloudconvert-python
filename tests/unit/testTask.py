@@ -10,8 +10,9 @@ import os
 sys.path.append(os.getcwd())
 
 import unittest
+import requests_mock
 import cloudconvert
-
+import json
 
 # API key for the Cloud convert Rest API
 API_KEY = "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6Ijk2Y2M2MTA1OGY4NzExNjllZDUxOGY5YWY3NDBjMjcyMmYzZTNkZjEwMjEzMDdkYjM3OGI5MjIyOTRiMGVmZTVhODRhNzE0Y2QzNzliNDU1In0.eyJhdWQiOiIxIiwianRpIjoiOTZjYzYxMDU4Zjg3MTE2OWVkNTE4ZjlhZjc0MGMyNzIyZjNlM2RmMTAyMTMwN2RiMzc4YjkyMjI5NGIwZWZlNWE4NGE3MTRjZDM3OWI0NTUiLCJpYXQiOjE1ODAyMjMzNzYsIm5iZiI6MTU4MDIyMzM3NiwiZXhwIjo0NzM1ODk2OTc2LCJzdWIiOiI0MDEwMDk0MSIsInNjb3BlcyI6WyJ0YXNrLnJlYWQiLCJ0YXNrLndyaXRlIl19.ARGA_YM00m_VGnXbcJ0i-KrDjoA7GAiM16BQ9BteZNS8MbiW85z1ojn1KdSsKPElsnjj8iO0wOYsQ93oTIiYYAe0_W18-u-xhUj3UZt9WPahAoIzVU1ayeq8aVB9vXu_i7u5dvYFZ3XtFCGdk-61N4YcNU5gVkBz-g0mWSFG2v0NbHCwT8M5F3LGZM9EPnAh3XdAEqpcaLoJoUBLA5S_pE5btOJNMO5l8asp-sOO1WAauoOKlkRW1WYjKELiOhs4vhU8vhP8iS_H7Q6RlPF6CWr3zR1bvPqaCERzOUAdh9Lfg5vigClR0K8GpLKJbOKYcyXSV5Oco2MdWmGX3X7wHElgPAzkprnfELmEP_XEgDao5O1z5ILDsJ8J95VwB9-iTmkTVxJ9AzuFKEhmrifbUmI74YzSD-D4PE0amY6GK-dym8_JslF09FvOo9h4XHaS5Libzcx9nUkkGzFxiSAPSvGUGEsE69DIjQ70U-5Skklglx693Zbqk3AXik7k0Fx6R4hC-EQtBFYGuKvl_UrMqfwqbBBLOfZfZqxotYE2nype3sxjlxSn-4XmYAESUZwL_QqEHzPriSg8m_kNpXlwV4cqTTVjLhEQwTBC8oWlxrM2hB64nGsXow5Xh08waKBGZCqy7zixz7pWwPiNU0rn1LgOLdawYX1Yq3Soau9STfE"
@@ -34,6 +35,7 @@ class TaskTestCase(unittest.TestCase):
 
         # setup the client with the provided API key by configuring
         self.cloudconvert.configure()
+        self.responses_path = os.path.join(os.getcwd(), "tests/unit/responses")
 
     def testCreateTask(self):
         """
@@ -47,9 +49,15 @@ class TaskTestCase(unittest.TestCase):
             "url": "https://file-examples.com/wp-content/uploads/2017/02/file-sample_100kB.docx"
         }
 
-        res = self.cloudconvert.Task.create(operation="import/url", payload=new_import_url_task)
+        with requests_mock.mock() as m:
+            with open("{}/{}".format(self.responses_path, "createTask.json")) as f:
+                response_json = json.load(f)
 
-        assert 'id' in list(res.keys()), "Unable to create 'import/url' task"
+            m.post("https://api.cloudconvert.com/v2/import/url", json=response_json)
+            task = self.cloudconvert.Task.create(operation="import/url", payload=new_import_url_task)
+
+            self.assertEqual(first=task['id'], second="66bd538e-1500-4e4b-b908-0e429b357e77")
+            print(m.called)
 
     def testWaitTask(self):
         """
@@ -57,10 +65,18 @@ class TaskTestCase(unittest.TestCase):
         :return:
         """
         print("testcase for waiting task..")
-        task_id = "be76cadf-33de-42f7-8c7f-9df787a09951"
-        res = self.cloudconvert.Task.wait(id=task_id)
 
-        assert 'id' in list(res.keys()), "Unable to create wait task"
+        with requests_mock.mock() as m:
+            with open("{}/{}".format(self.responses_path, "task.json")) as f:
+                response_json = json.load(f)
+
+            task_id = "4c80f1ae-5b3a-43d5-bb58-1a5c4eb4e46b"
+            m.get("https://api.cloudconvert.com/v2/tasks/{}/wait".format(task_id), json=response_json)
+
+            task = self.cloudconvert.Task.wait(id=task_id)
+
+            self.assertEqual(first=task['id'], second="4c80f1ae-5b3a-43d5-bb58-1a5c4eb4e46b")
+            print(m.called)
 
     def testShowTask(self):
         """
@@ -68,10 +84,18 @@ class TaskTestCase(unittest.TestCase):
         :return:
         """
         print("testcase for show task..")
-        task_id = "be76cadf-33de-42f7-8c7f-9df787a09951"
-        res = self.cloudconvert.Task.show(id=task_id)
 
-        assert 'id' in list(res.keys()), "Unable to create show task"
+        with requests_mock.mock() as m:
+            with open("{}/{}".format(self.responses_path, "task.json")) as f:
+                response_json = json.load(f)
+
+            task_id = "4c80f1ae-5b3a-43d5-bb58-1a5c4eb4e46b"
+            m.get("https://api.cloudconvert.com/v2/tasks/{}".format(task_id), json=response_json)
+
+            task = self.cloudconvert.Task.show(id=task_id)
+
+            self.assertEqual(first=task['id'], second="4c80f1ae-5b3a-43d5-bb58-1a5c4eb4e46b")
+            print(m.called)
 
     def testListTask(self):
         """
@@ -80,10 +104,15 @@ class TaskTestCase(unittest.TestCase):
         """
         print("testcase for listing tasks..")
 
-        res = self.cloudconvert.Task.all()
-        # res = self.cloudconvert.Task.all(params={'page':10})
+        with requests_mock.mock() as m:
+            with open("{}/{}".format(self.responses_path, "tasks.json")) as f:
+                response_json = json.load(f)
 
-        assert isinstance(res, list), "Unable to fetch the task list"
+            m.get("https://api.cloudconvert.com/v2/tasks", json=response_json)
+            tasks = self.cloudconvert.Task.all()
+
+            self.assertEqual(isinstance(tasks, list), True)
+            print(m.called)
 
     def testRetryTask(self):
         """
@@ -91,10 +120,16 @@ class TaskTestCase(unittest.TestCase):
         :return:
         """
         print("testcase for retrying a task")
-        task_id = "be76cadf-33de-42f7-8c7f-9df787a09951"
-        res = self.cloudconvert.Task.retry(id=task_id)
+        with requests_mock.mock() as m:
+            with open("{}/{}".format(self.responses_path, "retry.json")) as f:
+                response_json = json.load(f)
 
-        assert 'id' in list(res.keys()), "Unable to retry task"
+            task_id = "66bd538e-1500-4e4b-b908-0e429b357e77"
+            m.post("https://api.cloudconvert.com/v2/tasks/{}/retry".format(task_id), json=response_json)
+            tasks = self.cloudconvert.Task.retry(task_id)
+
+            self.assertEqual(tasks["retry_of_task_id"], task_id)
+            print(m.called)
 
     def testDeleteTask(self):
         """
@@ -102,19 +137,15 @@ class TaskTestCase(unittest.TestCase):
         :return:
         """
         print("testcase for delete task..")
-        task_id = "be76cadf-33de-42f7-8c7f-9df787a09951"
-        res = self.cloudconvert.Task.delete(id=task_id)
-        assert res == True,  "Unable to delete task"
 
-    def testCancelTask(self):
-        """
-        Cancel Task
-        :return:
-        """
-        print("testcase for Cancelling a task in waiting / processing status")
-        task_id = "be76cadf-33de-42f7-8c7f-9df787a09951"
-        res = self.cloudconvert.Task.cancel(id=task_id)
-        assert res == True, "Unable to cancel task"
+        with requests_mock.mock() as m:
+
+            task_id = "4c80f1ae-5b3a-43d5-bb58-1a5c4eb4e46b"
+            m.delete("https://api.cloudconvert.com/v2/tasks/{}".format(task_id), json={})
+
+            isDeleted = self.cloudconvert.Task.delete(id=task_id)
+            self.assertEqual(first=isDeleted, second=True)
+            print(m.called)
 
     def testDownloadOutput(self):
         """
