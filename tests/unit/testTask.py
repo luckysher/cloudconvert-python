@@ -56,7 +56,7 @@ class TaskTestCase(unittest.TestCase):
             m.post("https://api.cloudconvert.com/v2/import/url", json=response_json)
             task = self.cloudconvert.Task.create(operation="import/url", payload=new_import_url_task)
 
-            self.assertEqual(first=task['id'], second="66bd538e-1500-4e4b-b908-0e429b357e77")
+            self.assertEqual(first=task['id'], second="2f901289-c9fe-4c89-9c4b-98be526bdfbf")
             print(m.called)
 
     def testWaitTask(self):
