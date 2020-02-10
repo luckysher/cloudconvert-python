@@ -50,7 +50,7 @@ class TaskTestCase(unittest.TestCase):
         }
 
         with requests_mock.mock() as m:
-            with open("{}/{}".format(self.responses_path, "createTask.json")) as f:
+            with open("{}/{}".format(self.responses_path, "task_created.json")) as f:
                 response_json = json.load(f)
 
             m.post("https://api.cloudconvert.com/v2/import/url", json=response_json)
