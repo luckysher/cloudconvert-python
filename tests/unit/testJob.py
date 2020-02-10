@@ -11,6 +11,8 @@ sys.path.append(os.getcwd())
 
 import unittest
 import cloudconvert
+import requests_mock
+import json
 
 
 # API key for the Cloud convert Rest API
@@ -34,6 +36,7 @@ class JobTestCase(unittest.TestCase):
 
         # setup the client with the provided API key by configuring
         self.cloudconvert.configure()
+        self.responses_path = os.path.join(os.getcwd(), "tests/unit/responses")
 
     def testCreateJob(self):
         """
@@ -51,9 +54,16 @@ class JobTestCase(unittest.TestCase):
                 }
             }
         }
-        res = self.cloudconvert.Job.create(payload=job_with_single_task)
 
-        assert 'id' in list(res.keys()), "Unable to create new job"
+        with requests_mock.mock() as m:
+            with open("{}/{}".format(self.responses_path, "job_created.json")) as f:
+                response_json = json.load(f)
+
+            m.post("https://api.cloudconvert.com/v2/jobs", json=response_json)
+            job = self.cloudconvert.Job.create(payload=job_with_single_task)
+
+            self.assertEqual(first=job['id'], second="5da371b0-0e43-41c4-94a1-1e04de2d2e29")
+            print(m.called)
 
     def testWaitJob(self):
         """
@@ -61,9 +71,18 @@ class JobTestCase(unittest.TestCase):
         :return:
         """
         print("testcase for waiting job..")
-        job_id = "e03ed877-4964-4876-b1e2-8a5e597f9e71"
-        res = self.cloudconvert.Job.wait(id=job_id)
-        assert 'id' in list(res.keys()), "Unable to create wait job"
+
+        with requests_mock.mock() as m:
+            with open("{}/{}".format(self.responses_path, "job.json")) as f:
+                response_json = json.load(f)
+
+            job_id = "4c80f1ae-5b3a-43d5-bb58-1a5c4eb4e46b"
+            m.get("https://api.cloudconvert.com/v2/jobs/{}/wait".format(job_id), json=response_json)
+
+            job = self.cloudconvert.Job.wait(id=job_id)
+
+            self.assertEqual(first=job['id'], second="cd82535b-0614-4b23-bbba-b24ab0e892f7")
+            print(m.called)
 
     def testShowJob(self):
         """
@@ -71,9 +90,18 @@ class JobTestCase(unittest.TestCase):
         :return:
         """
         print("testcase for show job..")
-        job_id = "e03ed877-4964-4876-b1e2-8a5e597f9e71"
-        res = self.cloudconvert.Job.show(id=job_id)
-        assert 'id' in list(res.keys()), "Unable to create show job"
+
+        with requests_mock.mock() as m:
+            with open("{}/{}".format(self.responses_path, "job.json")) as f:
+                response_json = json.load(f)
+
+            job_id = "4c80f1ae-5b3a-43d5-bb58-1a5c4eb4e46b"
+            m.get("https://api.cloudconvert.com/v2/jobs/{}".format(job_id), json=response_json)
+
+            job = self.cloudconvert.Job.show(id=job_id)
+
+            self.assertEqual(first=job['id'], second="cd82535b-0614-4b23-bbba-b24ab0e892f7")
+            print(m.called)
 
     def testListJob(self):
         """
@@ -82,9 +110,15 @@ class JobTestCase(unittest.TestCase):
         """
         print("testcase for listing Jobs..")
 
-        res = self.cloudconvert.Job.all()
-        # res = self.cloudconvert.Job.all(params={'page':10})
-        assert isinstance(res, list), "Unable to fetch the job list"
+        with requests_mock.mock() as m:
+            with open("{}/{}".format(self.responses_path, "jobs.json")) as f:
+                response_json = json.load(f)
+
+            m.get("https://api.cloudconvert.com/v2/jobs", json=response_json)
+            jobs = self.cloudconvert.Job.all()
+
+            self.assertEqual(isinstance(jobs, list), True)
+            print(m.called)
 
     def testDeleteJob(self):
         """
@@ -92,9 +126,14 @@ class JobTestCase(unittest.TestCase):
         :return:
         """
         print("testcase for delete job..")
-        job_id = "be76cadf-33de-42f7-8c7f-9df787a09951"
-        res = self.cloudconvert.Job.delete(id=job_id)
-        assert res == True,  "Unable to delete job"
+
+        with requests_mock.mock() as m:
+            job_id = "66681017-2e84-4956-991f-d6513f6a4e35"
+            m.delete("https://api.cloudconvert.com/v2/jobs/{}".format(job_id), json={})
+
+            isDeleted = self.cloudconvert.Job.delete(id=job_id)
+            self.assertEqual(first=isDeleted, second=True)
+            print(m.called)
 
     def tearDown(self):
         """
