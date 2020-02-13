@@ -13,15 +13,13 @@ import unittest
 import cloudconvert
 import requests_mock
 import json
+from cloudconvert.config import API_KEY
 
-
-# API key for the Cloud convert Rest API
-API_KEY = "API_KEY"
 
 cloudconvert.API_KEY = API_KEY
 
 # Set API client in sandbox mode
-# cloudconvert.sandbox = True
+cloudconvert.sandbox = True
 
 
 class JobTestCase(unittest.TestCase):
@@ -36,7 +34,7 @@ class JobTestCase(unittest.TestCase):
 
         # setup the client with the provided API key by configuring
         self.cloudconvert.configure()
-        self.responses_path = os.path.join(os.getcwd(), "tests/unit/responses")
+        self.responses_path = os.path.join(os.getcwd(), "cloudconvert/tests/unit/responses")
 
     def testCreateJob(self):
         """
@@ -59,7 +57,7 @@ class JobTestCase(unittest.TestCase):
             with open("{}/{}".format(self.responses_path, "job_created.json")) as f:
                 response_json = json.load(f)
 
-            m.post("https://api.cloudconvert.com/v2/jobs", json=response_json)
+            m.post("https://api.sandbox.cloudconvert.com/v2/jobs", json=response_json)
             job = self.cloudconvert.Job.create(payload=job_with_single_task)
 
             self.assertEqual(first=job['id'], second="5da371b0-0e43-41c4-94a1-1e04de2d2e29")
@@ -77,7 +75,7 @@ class JobTestCase(unittest.TestCase):
                 response_json = json.load(f)
 
             job_id = "4c80f1ae-5b3a-43d5-bb58-1a5c4eb4e46b"
-            m.get("https://api.cloudconvert.com/v2/jobs/{}/wait".format(job_id), json=response_json)
+            m.get("https://api.sandbox.cloudconvert.com/v2/jobs/{}/wait".format(job_id), json=response_json)
 
             job = self.cloudconvert.Job.wait(id=job_id)
 
@@ -96,7 +94,7 @@ class JobTestCase(unittest.TestCase):
                 response_json = json.load(f)
 
             job_id = "4c80f1ae-5b3a-43d5-bb58-1a5c4eb4e46b"
-            m.get("https://api.cloudconvert.com/v2/jobs/{}".format(job_id), json=response_json)
+            m.get("https://api.sandbox.cloudconvert.com/v2/jobs/{}".format(job_id), json=response_json)
 
             job = self.cloudconvert.Job.show(id=job_id)
 
@@ -114,7 +112,7 @@ class JobTestCase(unittest.TestCase):
             with open("{}/{}".format(self.responses_path, "jobs.json")) as f:
                 response_json = json.load(f)
 
-            m.get("https://api.cloudconvert.com/v2/jobs", json=response_json)
+            m.get("https://api.sandbox.cloudconvert.com/v2/jobs", json=response_json)
             jobs = self.cloudconvert.Job.all()
 
             self.assertEqual(isinstance(jobs, list), True)
@@ -129,7 +127,7 @@ class JobTestCase(unittest.TestCase):
 
         with requests_mock.mock() as m:
             job_id = "66681017-2e84-4956-991f-d6513f6a4e35"
-            m.delete("https://api.cloudconvert.com/v2/jobs/{}".format(job_id), json={})
+            m.delete("https://api.sandbox.cloudconvert.com/v2/jobs/{}".format(job_id), json={})
 
             isDeleted = self.cloudconvert.Job.delete(id=job_id)
             self.assertEqual(first=isDeleted, second=True)

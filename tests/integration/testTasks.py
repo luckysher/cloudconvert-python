@@ -11,15 +11,12 @@ sys.path.append(os.getcwd())
 
 import unittest
 import cloudconvert
-
-
-# API key for the Cloud convert Rest API
-API_KEY = "API_KEY"
+from cloudconvert.config import API_KEY
 
 cloudconvert.API_KEY = API_KEY
 
 # Set API client in sandbox mode
-#cloudconvert.sandbox = True
+cloudconvert.sandbox = True
 
 
 class TasksTestCase(unittest.TestCase):
@@ -48,7 +45,7 @@ class TasksTestCase(unittest.TestCase):
         task = cloudconvert.Task.create(operation="import/url", payload=new_task)
 
         # do wait for the task
-        wait_task = cloudconvert.Task.find(id=task["id"])
+        wait_task = cloudconvert.Task.wait(id=task["id"])
 
         # delete the task
         deleted = cloudconvert.Task.delete(id=wait_task["id"])

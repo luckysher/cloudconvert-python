@@ -11,15 +11,12 @@ sys.path.append(os.getcwd())
 
 import unittest
 import cloudconvert
-
-
-# API key for the Cloud convert Rest API
-API_KEY = "API_KEY"
+from cloudconvert.config import API_KEY
 
 cloudconvert.API_KEY = API_KEY
 
 # Set API client in sandbox mode
-#cloudconvert.sandbox = True
+cloudconvert.sandbox = True
 
 
 class JobsTestCase(unittest.TestCase):
@@ -71,13 +68,13 @@ class JobsTestCase(unittest.TestCase):
         import_task = cloudconvert.Task.find(id=import_task_id)
 
         # do upload
-        uploaded = cloudconvert.Task.upload(file_name="file/path/to/upload.ext", task=import_task)
+        uploaded = cloudconvert.Task.upload(file_name=os.path.join(os.getcwd(), "cloudconvert/tests/integration/files/input.pdf"), task=import_task)
 
         if uploaded:
             print("Uploaded file successfully..")
 
             # fetch the finished export task
-            exported_task = cloudconvert.Task.find(id=export_task_id)
+            exported_task = cloudconvert.Task.wait(id=export_task_id)
 
             # get exported url
             exported_url = exported_task.get("result").get("files")[0].get("url")
