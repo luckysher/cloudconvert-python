@@ -6,7 +6,7 @@
 ## Installation
 
 ```
-
+ pip install cloudconvert
 ```
 
 ## Creating and Configuring API Client
