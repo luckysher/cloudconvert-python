@@ -33,7 +33,7 @@ class TaskTestCase(unittest.TestCase):
 
         # setup the client with the provided API key by configuring
         self.cloudconvert.configure()
-        self.responses_path = os.path.join(os.getcwd(), "cloudconvert/tests/unit/responses")
+        self.responses_path = os.path.join(os.getcwd(), "tests/unit/responses")
 
     def testCreateTask(self):
         """
@@ -159,6 +159,7 @@ class TaskTestCase(unittest.TestCase):
         :return:
         """
         print("Tearing down task test cases..")
+
 
 
 if __name__ == '__main__':
