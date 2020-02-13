@@ -68,7 +68,7 @@ class JobsTestCase(unittest.TestCase):
         import_task = cloudconvert.Task.find(id=import_task_id)
 
         # do upload
-        uploaded = cloudconvert.Task.upload(file_name=os.path.join(os.getcwd(), "cloudconvert/tests/integration/files/input.pdf"), task=import_task)
+        uploaded = cloudconvert.Task.upload(file_name=os.path.join(os.getcwd(), "tests/integration/files/input.pdf"), task=import_task)
 
         if uploaded:
             print("Uploaded file successfully..")
