@@ -48,7 +48,7 @@ class JobTestCase(unittest.TestCase):
             "tasks": {
                 "sandbox-task-import-file": {
                     "operation": "import/url",
-                    "url": "https://file-examples.com/wp-content/uploads/2017/02/file-sample_100kB.docx"
+                    "url": "https://github.com/cloudconvert/cloudconvert-php/raw/master/tests/Integration/files/input.pdf"
                 }
             }
         }

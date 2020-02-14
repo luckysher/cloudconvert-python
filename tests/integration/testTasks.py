@@ -39,7 +39,7 @@ class TasksTestCase(unittest.TestCase):
         """
         print("Test case for 'import/url' file...")
         new_task = {
-            "url": "file/url/to/upload"
+            "url": "https://github.com/cloudconvert/cloudconvert-php/raw/master/tests/Integration/files/input.pdf"
         }
 
         task = cloudconvert.Task.create(operation="import/url", payload=new_task)

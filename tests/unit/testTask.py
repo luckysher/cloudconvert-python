@@ -44,7 +44,7 @@ class TaskTestCase(unittest.TestCase):
 
         # create dict for new task
         new_import_url_task = {
-            "url": "https://file-examples.com/wp-content/uploads/2017/02/file-sample_100kB.docx"
+            "url": "https://github.com/cloudconvert/cloudconvert-php/raw/master/tests/Integration/files/input.pdf"
         }
 
         with requests_mock.mock() as m:
